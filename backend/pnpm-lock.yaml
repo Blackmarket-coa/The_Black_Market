@@ -56,6 +56,9 @@ importers:
       '@mikro-orm/postgresql':
         specifier: 6.4.3
         version: 6.4.3(@mikro-orm/core@6.4.3)
+      algoliasearch:
+        specifier: ^5.44.0
+        version: 5.44.0
       awilix:
         specifier: ^8.0.1
         version: 8.0.1
