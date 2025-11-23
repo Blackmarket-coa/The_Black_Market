@@ -8,7 +8,6 @@ Before starting, ensure you have the following installed:
 
 - **Node.js 20+** (Recommended: v22.13.1)
 - **PostgreSQL 14+** (Running locally on port 5432)
-- **Redis 6+** (Running locally on port 6379)
 - **pnpm** (Package manager)
 
 ## 🗂️ Project Structure
@@ -176,6 +175,21 @@ VITE_MEDUSA_STOREFRONT_URL=http://localhost:3000
 ```env
 VITE_MEDUSA_BACKEND_URL=http://localhost:9000
 VITE_MEDUSA_STOREFRONT_URL=http://localhost:3000
+```
+
+## 💾 File Storage
+
+**Railway Deployment:** When deploying to Railway using the deploy button, MinIO object storage is fully configured and ready to use. All file uploads (product images, etc.) are automatically stored in a MinIO bucket.
+
+**Local Development:** The project automatically falls back to disk storage (files are saved in the `backend/static` folder) for easy local setup - no additional configuration needed.
+
+To manually configure MinIO for local development, add these variables to `backend/.env`:
+
+```env
+MINIO_ENDPOINT=your-minio-endpoint.com
+MINIO_ACCESS_KEY=your-access-key
+MINIO_SECRET_KEY=your-secret-key
+MINIO_BUCKET=custom-bucket-name  # Optional, defaults to 'medusa-media'
 ```
 
 ## 🔧 Troubleshooting

@@ -50,6 +50,30 @@ module.exports = defineConfig({
     }
   ],
   modules: [
+    {
+      resolve: '@medusajs/medusa/file',
+      options: {
+        providers: [
+          ...(process.env.MINIO_ENDPOINT && process.env.MINIO_ACCESS_KEY && process.env.MINIO_SECRET_KEY ? [{
+            resolve: './src/modules/minio-file',
+            id: 'minio',
+            options: {
+              endPoint: process.env.MINIO_ENDPOINT,
+              accessKey: process.env.MINIO_ACCESS_KEY,
+              secretKey: process.env.MINIO_SECRET_KEY,
+              bucket: process.env.MINIO_BUCKET // Optional, defaults to 'medusa-media'
+            }
+          }] : [{
+            resolve: '@medusajs/medusa/file-local',
+            id: 'local',
+            options: {
+              upload_dir: 'static',
+              backend_url: `${process.env.BACKEND_URL || 'http://localhost:9000'}/static`
+            }
+          }])
+        ]
+      }
+    },
     ...(process.env.REDIS_URL ? [
       {
         resolve: '@medusajs/medusa/event-bus-redis',
