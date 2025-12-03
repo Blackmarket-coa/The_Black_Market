@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
   const TALK_JS_APP_ID = env.VITE_TALK_JS_APP_ID || ""
   const DISABLE_SELLERS_REGISTRATION =
     env.VITE_DISABLE_SELLERS_REGISTRATION || "false"
-  const PUBLIC_BASE_URL = env.VITE_PUBLIC_BASE_URL || ""
+  const PUBLIC_BASE_URL = env.VITE_PUBLIC_BASE_URL || "https://doboydash.up.railway.app"
 
   /**
    * Add this to your .env file to specify the project to load admin extensions from.
