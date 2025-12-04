@@ -45,8 +45,39 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "s3.eu-central-1.amazonaws.com",
       },
+      // Add your MinIO endpoint here
+      {
+        protocol: "https",
+        hostname: "blkmrktbucket.up.railway.app", // Replace with actual MinIO domain
+      },
+      // Add your Medusa backend for images
+      {
+        protocol: "https",
+        hostname: "ibis.up.railway.app",
+      },
     ],
   },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Content-Security-Policy',
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com",
+              "img-src 'self' data: https: blob:",
+              "connect-src 'self' https://ibis.up.railway.app https://blkmrktbucket.up.railway.app",
+              "frame-src 'self'",
+            ].join('; ')
+          }
+        ]
+      }
+    ]
+  }
 }
 
 module.exports = nextConfig
