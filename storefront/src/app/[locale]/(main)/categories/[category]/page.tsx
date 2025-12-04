@@ -31,12 +31,18 @@ export async function generateMetadata({
     return {}
   }
 
+  // === FIX: explicit typing for regions and countries ===
+  type Country = { iso_2: string }
+  type Region = { countries?: Country[] }
+
   let languages: Record<string, string> = {}
   try {
     const regions = await listRegions()
     const locales = Array.from(
       new Set(
-        (regions || []).flatMap((r) => r.countries?.map((c) => c.iso_2) || [])
+        (regions || []).flatMap((r: Region) =>
+          r.countries?.map((c: Country) => c.iso_2) || []
+        )
       )
     ) as string[]
     languages = locales.reduce<Record<string, string>>((acc, code) => {
@@ -90,10 +96,10 @@ async function Category({
   const { category: handle, locale } = await params
 
   const category = await getCategoryByHandle([handle])
-
   if (!category) {
     return notFound()
   }
+
   const currency_code = (await getRegion(locale))?.currency_code || "usd"
   const ua = (await headers()).get("user-agent") || ""
   const bot = isBot(ua)
@@ -110,6 +116,7 @@ async function Category({
   const host = headersList.get("host")
   const protocol = headersList.get("x-forwarded-proto") || "https"
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`
+
   const {
     response: { products: jsonLdProducts },
   } = await listProducts({
