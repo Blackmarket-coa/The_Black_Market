@@ -25,12 +25,20 @@ export async function generateMetadata({
   const protocol = headersList.get("x-forwarded-proto") || "https"
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || `${protocol}://${host}`
 
+  type Country = {
+    iso_2: string
+  }
+
+  type Region = {
+    countries?: Country[]
+  }
+
   let languages: Record<string, string> = {}
   try {
-    const regions = await listRegions()
+    const regions: Region[] = await listRegions()
     const locales = Array.from(
       new Set(
-        (regions || []).flatMap((r) => r.countries?.map((c) => c.iso_2) || [])
+        (regions || []).flatMap((r: Region) => r.countries?.map((c: Country) => c.iso_2) || [])
       )
     ) as string[]
     languages = locales.reduce<Record<string, string>>((acc, code) => {
